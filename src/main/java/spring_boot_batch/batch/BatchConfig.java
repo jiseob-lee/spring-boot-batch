@@ -33,7 +33,7 @@ public class BatchConfig {
 	
 	//private final JobRegistry jobRegistry;
     @Bean
-    public DataSource dataSource() {
+    DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/rg?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true");
@@ -43,12 +43,12 @@ public class BatchConfig {
     }
     
 	@Bean
-	public PlatformTransactionManager transactionManager(DataSource dataSource) {
+	PlatformTransactionManager transactionManager(DataSource dataSource) {
 	    return new DataSourceTransactionManager(dataSource);
 	}
 	
     @Bean
-    public Job testJob(JobRepository jobRepository,PlatformTransactionManager transactionManager) throws DuplicateJobException {
+    Job testJob(JobRepository jobRepository,PlatformTransactionManager transactionManager) throws DuplicateJobException {
        
     	Job job = new JobBuilder("testJob",jobRepository)
                .start(testStep(jobRepository,transactionManager))
@@ -62,7 +62,7 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step testStep(JobRepository jobRepository,PlatformTransactionManager transactionManager){
+    Step testStep(JobRepository jobRepository,PlatformTransactionManager transactionManager){
         Step step = new StepBuilder("testStep",jobRepository)
                 .tasklet(testTasklet(null),transactionManager)
                 .build();
@@ -71,7 +71,7 @@ public class BatchConfig {
 
     @Bean
     @StepScope
-    public Tasklet testTasklet(@Value("#{jobParameters[time]}") String time) {
+    Tasklet testTasklet(@Value("#{jobParameters[time]}") String time) {
         return ((contribution, chunkContext) -> {
 
         	LocalDateTime now = LocalDateTime.now();

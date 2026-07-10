@@ -11,7 +11,6 @@ import org.springframework.batch.core.launch.JobOperator;
 //import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 //import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.JobRestartException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -29,12 +28,16 @@ public class BatchScheduler {
 	//@Autowired
     //private JobRegistry jobRegistry;
     
-    @Autowired
-    private JobOperator jobOperator;
+    //@Autowired
+    private final JobOperator jobOperator;
     
-    @Autowired
-    private Job testJob;
+    //@Autowired
+    private final Job testJob;
     
+    public BatchScheduler(JobOperator jobOperator, Job testJob) {
+    	this.jobOperator = jobOperator;
+    	this.testJob = testJob;
+    }
     /*
     @Bean
     public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(JobRegistry jobRegistry) {
